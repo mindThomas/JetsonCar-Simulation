@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<launch>
+	<arg name="gui" default="true" />
+
+	<!-- urdf xml robot description loaded on the Parameter Server (for use in RViz) - this also converts the xacro into a proper urdf file -->
+	<param name="robot_description" command="$(find xacro)/xacro '$(find jetsoncar_description)/urdf/jetsoncar.xacro'" />
+	<param name="use_gui" value="$(arg gui)"/>
+
+	<!-- calculate and publish the tf's for each joint based on the urdf file within robot_description -->
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+	<!-- possibly a GUI for manual control of joint angles -->
+        <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+
+	<!-- rviz display -->
+	<node name="rviz_visualizer" pkg="rviz" type="rviz" required="true" args="-d $(find jetsoncar_description)/rviz/tf_display.rviz" />
+</launch>

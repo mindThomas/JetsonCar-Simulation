@@ -1,0 +1,2 @@
+catkin_create_pkg jetsoncar_description
+catkin_create_pkg jetsoncar_gazebo gazebo_ros

@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<robot name="jetsoncar" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<!-- include the Gazebo description of the JetsonCar -->
+<!-- eg. inspired from the racecar project or https://github.com/husky/husky_simulator/blob/indigo-devel/husky_gazebo/urdf/husky.gazebo.xacro -->
+
+</robot>

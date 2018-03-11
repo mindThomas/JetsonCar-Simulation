@@ -1,0 +1,227 @@
+<?xml version="1.0"?>
+<robot name="jetsoncar" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<!--
+ 1. Create model with URDF: http://wiki.ros.org/urdf/Tutorials/Create%20your%20own%20urdf%20file
+ 2. Add controllable joints: http://wiki.ros.org/urdf/Tutorials/Building%20a%20Movable%20Robot%20Model%20with%20URDF
+ 3. Physical properties: http://wiki.ros.org/urdf/Tutorials/Adding%20Physical%20and%20Collision%20Properties%20to%20a%20URDF%20Model or http://gazebosim.org/tutorials/?tut=ros_urdf
+ 4. Use Macros: http://wiki.ros.org/urdf/Tutorials/Using%20Xacro%20to%20Clean%20Up%20a%20URDF%20File
+ 5. Link to Gazebo: http://wiki.ros.org/urdf/Tutorials/Using%20a%20URDF%20in%20Gazebo
+-->
+
+<!-- Inspired from https://github.com/DJTobias/Cherry-Autonomous-Racecar/blob/master/urdf/car.urdf
+     and https://github.com/mit-racecar/racecar-simulator/blob/master/racecar_description/urdf/racecar.xacro
+-->
+
+	<xacro:property name="front_to_rear_wheel_center" value="0.42" />
+	<xacro:property name="left_to_right_wheel_center" value="0.285" />
+	<xacro:property name="baseplate_to_wheel_center" value="0.118" />
+	<xacro:property name="wheel_diameter" value="0.155" />
+	<xacro:property name="wheel_thickness" value="0.064" />
+
+	<xacro:include filename="$(find jetsoncar_description)/urdf/materials.xacro" />
+	
+	<link name="base_link" />
+
+	<link name="imu">
+		<visual>
+			<geometry>
+				<box size="0.05 0.05 0.03"/> <!-- 50x50x30 mm, Please confirm against 3D drawings -->
+			</geometry>
+			<origin xyz="0 0 0" rpy="0 0 0" /> <!-- origin (0,0,0) is in the center of the box -->
+			<material name="grey"/>
+		</visual>
+	</link>
+
+	<link name="baseplate">
+		<visual>
+			<geometry>
+				<box size="0.50 0.20 0.0675"/> <!-- 50x20x6.75 cm, X-axis is front of vehicle -->
+			</geometry>
+			<origin xyz="0 0 0.03375" rpy="0 0 0" /> <!-- origin (0,0,0) is in the center of the box -->
+			<material name="acrylic"/>
+		</visual>
+	</link>
+
+	<link name="front_mount">
+		<visual>
+			<geometry>
+				<box size="0.24 0.12 0.01"/>
+			</geometry>
+			<origin xyz="0 0 0" rpy="0 0.5 0" /> <!-- origin (0,0,0) is in the center of the box -->
+			<material name="grey"/>
+		</visual>
+	</link>
+
+	<link name="rear_mount">
+		<visual>
+			<geometry>
+				<box size="0.24 0.12 0.01"/>
+			</geometry>
+			<origin xyz="0 0 0" rpy="0 -0.5 0" /> <!-- origin (0,0,0) is in the center of the box -->
+			<material name="grey"/>
+		</visual>
+	</link>
+
+	<link name="rear_shaft">
+		<visual>
+			<geometry>
+				<cylinder length="${left_to_right_wheel_center}" radius="0.018"/> <!-- confirm length between wheels -->
+			</geometry>
+			<origin xyz="0 0 0" rpy="1.570796327 0 0" /> <!-- origin (0,0,0) is in the center of the cylinder -->
+			<material name="black"/>
+		</visual>
+	</link>
+
+	<link name="front_shaft">
+		<visual>
+			<geometry>
+				<cylinder length="${left_to_right_wheel_center}" radius="0.018"/> <!-- confirm length between wheels -->
+			</geometry>
+			<origin xyz="0 0 0" rpy="1.570796327 0 0" /> <!-- origin (0,0,0) is in the center of the cylinder -->
+			<material name="black"/>
+		</visual>
+	</link>
+
+	<link name="front_right_bearing">
+		<visual>
+			<geometry>
+				<sphere radius="0.015"/>
+			</geometry>
+			<origin xyz="0 0 0" rpy="0 0 0" /> <!-- origin (0,0,0) is in the center of the cylinder -->
+			<material name="white"/>
+		</visual>
+	</link>
+
+	<link name="front_right_wheel">
+		<visual>
+			<geometry>
+				<cylinder length="${wheel_thickness}" radius="${wheel_diameter/2}"/>
+			</geometry>
+			<origin xyz="0 0 0" rpy="1.570796327 0 0" /> <!-- origin (0,0,0) is in the center of the cylinder -->
+			<material name="black"/>
+		</visual>
+	</link>
+
+	<link name="front_left_bearing">
+		<visual>
+			<geometry>
+				<sphere radius="0.015"/>
+			</geometry>
+			<origin xyz="0 0 0" rpy="0 0 0" /> <!-- origin (0,0,0) is in the center of the cylinder -->
+			<material name="white"/>
+		</visual>
+	</link>
+
+	<link name="front_left_wheel">
+		<visual>
+			<geometry>
+				<cylinder length="${wheel_thickness}" radius="${wheel_diameter/2}"/>
+			</geometry>
+			<origin xyz="0 0 0" rpy="1.570796327 0 0" /> <!-- origin (0,0,0) is in the center of the cylinder -->
+			<material name="black"/>
+		</visual>
+	</link>
+
+	<link name="rear_right_wheel">
+		<visual>
+			<geometry>
+				<cylinder length="${wheel_thickness}" radius="${wheel_diameter/2}"/>
+			</geometry>
+			<origin xyz="0 0 0" rpy="1.570796327 0 0" /> <!-- origin (0,0,0) is in the center of the cylinder -->
+			<material name="black"/>
+		</visual>
+	</link>
+
+	<link name="rear_left_wheel">
+		<visual>
+			<geometry>
+				<cylinder length="${wheel_thickness}" radius="${wheel_diameter/2}"/>
+			</geometry>
+			<origin xyz="0 0 0" rpy="1.570796327 0 0" /> <!-- origin (0,0,0) is in the center of the cylinder -->
+			<material name="black"/>
+		</visual>
+	</link>
+
+	<joint name="baselink_to_baseplate" type="fixed">
+		<parent link="base_link"/>
+		<child link="baseplate"/>
+		<origin xyz="0 0 0" rpy="0 0 0" /> <!-- offset from parent to child, so with direction based in parent frame -->
+	</joint>
+
+	<joint name="baseplate_to_imu" type="fixed">
+		<parent link="baseplate"/>
+		<child link="imu"/>
+		<origin xyz="0 0 0.015" rpy="0 0 0" /> <!-- offset from parent to child, so with direction based in parent frame -->
+	</joint>
+
+	<joint name="baseplate_to_front_mount" type="fixed">
+		<parent link="baseplate"/>
+		<child link="front_mount"/>
+		<origin xyz="${front_to_rear_wheel_center/4} 0 -${baseplate_to_wheel_center/2}" rpy="0 0 0" /> <!-- offset from parent to child, so with direction based in parent frame -->
+	</joint>
+
+	<joint name="front_mount_to_front_shaft" type="fixed">
+		<parent link="front_mount"/>
+		<child link="front_shaft"/>
+		<origin xyz="${front_to_rear_wheel_center/4} 0 -${baseplate_to_wheel_center/2}" rpy="0 0 0" /> <!-- offset from parent to child, so with direction based in parent frame -->
+	</joint>
+
+	<joint name="baseplate_to_rear_mount" type="fixed">
+		<parent link="baseplate"/>
+		<child link="rear_mount"/>
+		<origin xyz="-${front_to_rear_wheel_center/4} 0 -${baseplate_to_wheel_center/2}" rpy="0 0 0" /> <!-- offset from parent to child, so with direction based in parent frame -->
+	</joint>
+
+	<joint name="rear_mount_to_rear_shaft" type="fixed">
+		<parent link="rear_mount"/>
+		<child link="rear_shaft"/>
+		<origin xyz="-${front_to_rear_wheel_center/4} 0 -${baseplate_to_wheel_center/2}" rpy="0 0 0" /> <!-- offset from parent to child, so with direction based in parent frame -->
+	</joint>
+
+	<joint name="front_right_bearing_joint" type="revolute"> <!-- revolute is a joint with a range limited motion around its' axis -->
+		<parent link="front_shaft"/>
+		<child link="front_right_bearing"/>
+		<origin xyz="0 -${left_to_right_wheel_center/2} 0" rpy="0 0 0" /> <!-- offset from parent to child, so with direction based in parent frame -->
+		<axis xyz="0 0 1"/>
+    		<limit lower="-${20/180*pi}" upper="${20/180*pi}" effort="1000" velocity="0.5"/>
+	</joint>
+
+	<joint name="front_right_wheel_joint" type="continuous"> <!-- continuous is a joint of continous motion around its' axis -->
+		<parent link="front_right_bearing"/>
+		<child link="front_right_wheel"/>
+		<origin xyz="0 0 0" rpy="0 0 0" /> <!-- offset from parent to child, so with direction based in parent frame -->
+		<axis xyz="0 1 0"/>
+	</joint>
+
+	<joint name="front_left_bearing_joint" type="revolute"> <!-- revolute is a joint with a range limited motion around its' axis -->
+		<parent link="front_shaft"/>
+		<child link="front_left_bearing"/>
+		<origin xyz="0 ${left_to_right_wheel_center/2} 0" rpy="0 0 0" /> <!-- offset from parent to child, so with direction based in parent frame -->
+		<axis xyz="0 0 1"/>
+    		<limit lower="-${20/180*pi}" upper="${20/180*pi}" effort="1000" velocity="0.5"/>
+	</joint>
+
+	<joint name="front_left_wheel_joint" type="continuous"> <!-- continuous is a joint of continous motion around its' axis -->
+		<parent link="front_left_bearing"/>
+		<child link="front_left_wheel"/>
+		<origin xyz="0 0 0" rpy="0 0 0" /> <!-- offset from parent to child, so with direction based in parent frame -->
+		<axis xyz="0 1 0"/>
+	</joint>
+
+	<joint name="rear_right_wheel_joint" type="continuous"> <!-- continuous is a joint of continous motion around its' axis -->
+		<parent link="rear_shaft"/>
+		<child link="rear_right_wheel"/>
+		<origin xyz="0 -${left_to_right_wheel_center/2} 0" rpy="0 0 0" /> <!-- offset from parent to child, so with direction based in parent frame -->
+		<axis xyz="0 1 0"/>
+	</joint>
+
+	<joint name="rear_left_wheel_joint" type="continuous"> <!-- continuous is a joint of continous motion around its' axis -->
+		<parent link="rear_shaft"/>
+		<child link="rear_left_wheel"/>
+		<origin xyz="0 ${left_to_right_wheel_center/2} 0" rpy="0 0 0" /> <!-- offset from parent to child, so with direction based in parent frame -->
+		<axis xyz="0 1 0"/>
+	</joint>
+
+	<xacro:include filename="$(find jetsoncar_description)/urdf/gazebo.xacro" />
+</robot>
