@@ -9,16 +9,32 @@
 		</joint>
 	</xacro:macro>
 
-	<xacro:macro name="steering_joint" params="parent child offset">
+	<xacro:macro name="dampener_joint" params="parent child offset">
+		<joint name="${parent}_to_${child}" type="prismatic">
+			<parent link="${parent}"/>
+			<child link="${child}"/>
+			<origin xyz="${offset}" rpy="0 0 0" /> <!-- offset from parent to child, so with direction based in parent frame -->
+			<axis xyz="0 0 -1"/> <!-- suspension works up and down -->
+			<limit lower="${susp_lower}" upper="${susp_upper}" effort="0" velocity="0"/>
+		        <dynamics damping="${susp_damping}" spring_stiffness="${susp_stiffness}" spring_reference="${susp_spring_center}"/>
+			<physics>
+				<ode>
+					<implicit_spring_damper>0</implicit_spring_damper>
+				</ode>
+			</physics>
+		</joint>
+	</xacro:macro>
+
+	<xacro:macro name="hinge_joint" params="parent child offset">
 		<joint name="${child}_joint" type="revolute"> <!-- revolute is a joint with a range limited motion around its' axis -->
 			<parent link="${parent}"/>
 			<child link="${child}"/>
 			<origin xyz="${offset}" rpy="0 0 0" /> <!-- offset from parent to child, so with direction based in parent frame -->
 			<axis xyz="0 0 1"/>
-	    		<limit lower="-${steering_wheel_angle_limit}" upper="${steering_wheel_angle_limit}" effort="100" velocity="0.5"/>
+	    		<limit lower="-${steering_wheel_angle_limit}" upper="${steering_wheel_angle_limit}" effort="100" velocity="0.5"/> <!-- effeort is similar to torque/acceleration -->
 			<!-- friction - The physical static friction. For prismatic joints, the units are Newtons. For revolving joints, the units are Newton meters. -->
 			<!-- damping - The physical damping value. For prismatic joints, the units are Newton seconds per meter. For revolving joints, Newton meter secons per radian. -->
-			<dynamics friction="0.0" damping="0.0"/>
+			<!--<dynamics friction="0.0" damping="0.0"/>-->
 		</joint>
 	</xacro:macro>
 
@@ -30,7 +46,7 @@
 			<axis xyz="0 1 0"/>
 			<!-- friction - The physical static friction. For prismatic joints, the units are Newtons. For revolving joints, the units are Newton meters. -->
 			<!-- damping - The physical damping value. For prismatic joints, the units are Newton seconds per meter. For revolving joints, Newton meter secons per radian. -->
-			<dynamics friction="0.0" damping="0.0"/>
+			<!--<dynamics friction="0.0" damping="0.0"/>-->
 		</joint>
 	</xacro:macro>
 

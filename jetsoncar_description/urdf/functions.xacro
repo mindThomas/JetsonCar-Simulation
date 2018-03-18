@@ -3,7 +3,7 @@
 
 	<!-- Based on https://en.wikipedia.org/wiki/List_of_moments_of_inertia -->
 	<xacro:macro name="box_inertial" params="mass width length height">
-		<mass value="1e-5" />
+		<mass value="${mass}" />
 		<inertia ixx="${1/12*mass*(width*width+height*height)}"
 			 ixy="0"
 			 ixz="0"
@@ -14,7 +14,7 @@
 	</xacro:macro>
 
 	<xacro:macro name="cylinder_inertial" params="mass radius length">
-		<mass value="1e-5" />
+		<mass value="${mass}" />
 		<inertia ixx="${1/12*mass*(3*radius*radius+length*length)}"
 			 ixy="0"
 			 ixz="0"

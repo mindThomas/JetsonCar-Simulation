@@ -20,6 +20,7 @@
 	<xacro:include filename="$(find jetsoncar_description)/urdf/materials.xacro" />
 	<xacro:include filename="$(find jetsoncar_description)/urdf/physical.xacro" />
 	<xacro:include filename="$(find jetsoncar_description)/urdf/joints.xacro" />
+	<xacro:include filename="$(find jetsoncar_description)/urdf/transmissions.xacro" />
 	
 	<link name="base_link" />
 
@@ -92,6 +93,7 @@
 		</inertial>
 	</link>
 	<xacro:fixed_offset_joint parent="front_mount" child="front_shaft" offset="${front_to_rear_wheel_center/4} 0 -${baseplate_to_wheel_center/2}"/>
+	<!--<xacro:dampener_joint parent="front_mount" child="front_shaft" offset="${front_to_rear_wheel_center/4} 0 -${baseplate_to_wheel_center/2}"/> I can not get the dampener joint to work properly. The car seems to be bouncing around, like the spring is too hard and dampening is too little. I already tried adjusting several parameters. -->
 
 	<link name="rear_shaft">
 		<visual>
@@ -106,32 +108,36 @@
 		</inertial>
 	</link>
 	<xacro:fixed_offset_joint parent="rear_mount" child="rear_shaft" offset="-${front_to_rear_wheel_center/4} 0 -${baseplate_to_wheel_center/2}"/>
+	<!-- <xacro:dampener_joint parent="rear_mount" child="rear_shaft" offset="-${front_to_rear_wheel_center/4} 0 -${baseplate_to_wheel_center/2}"/> I can not get the dampener joint to work properly. The car seems to be bouncing around, like the spring is too hard and dampening is too little. I already tried adjusting several parameters. -->
 
-	<link name="front_right_bearing">
+
+	<link name="front_right_hinge">
 		<visual>
 			<material name="white"/>
-			<xacro:bearing_geometry/>
+			<xacro:hinge_geometry/>
 		</visual>
 		<collision>
-			<xacro:bearing_geometry/>
+			<xacro:hinge_geometry/>
 		</collision>
 		<inertial>
-			<xacro:bearing_inertial/>
+			<xacro:hinge_inertial/>
 		</inertial>
 	</link>
+	<xacro:hinge_joint parent="front_shaft" child="front_right_hinge" offset="0 -${left_to_right_wheel_center/2} 0"/>
 
-	<link name="front_left_bearing">
+	<link name="front_left_hinge">
 		<visual>
 			<material name="white"/>
-			<xacro:bearing_geometry/>
+			<xacro:hinge_geometry/>
 		</visual>
 		<collision>
-			<xacro:bearing_geometry/>
+			<xacro:hinge_geometry/>
 		</collision>
 		<inertial>
-			<xacro:bearing_inertial/>
+			<xacro:hinge_inertial/>
 		</inertial>
 	</link>
+	<xacro:hinge_joint parent="front_shaft" child="front_left_hinge" offset="0 ${left_to_right_wheel_center/2} 0"/>
 
 	<link name="front_right_wheel">
 		<visual>
@@ -146,6 +152,7 @@
 			<xacro:wheel_inertial/>
 		</inertial>
 	</link>
+	<xacro:wheel_joint parent="front_right_hinge" child="front_right_wheel" offset="0 0 0"/>
 
 	<link name="front_left_wheel">
 		<visual>
@@ -160,6 +167,7 @@
 			<xacro:wheel_inertial/>
 		</inertial>
 	</link>
+	<xacro:wheel_joint parent="front_left_hinge" child="front_left_wheel" offset="0 0 0"/>
 
 
 	<link name="rear_right_wheel">
@@ -175,7 +183,7 @@
 			<xacro:wheel_inertial/>
 		</inertial>
 	</link>
-
+	<xacro:wheel_joint parent="rear_shaft" child="rear_right_wheel" offset="0 -${left_to_right_wheel_center/2} 0"/>
 
 	<link name="rear_left_wheel">
 		<visual>
@@ -190,18 +198,20 @@
 			<xacro:wheel_inertial/>
 		</inertial>
 	</link>
-
-
-	<xacro:steering_joint parent="front_shaft" child="front_right_bearing" offset="0 -${left_to_right_wheel_center/2} 0"/>
-	<xacro:steering_joint parent="front_shaft" child="front_left_bearing" offset="0 ${left_to_right_wheel_center/2} 0"/>
-
-	<xacro:wheel_joint parent="front_right_bearing" child="front_right_wheel" offset="0 0 0"/>
-	<xacro:wheel_joint parent="front_left_bearing" child="front_left_wheel" offset="0 0 0"/>
-
-	<xacro:wheel_joint parent="rear_shaft" child="rear_right_wheel" offset="0 -${left_to_right_wheel_center/2} 0"/>
 	<xacro:wheel_joint parent="rear_shaft" child="rear_left_wheel" offset="0 ${left_to_right_wheel_center/2} 0"/>
 
 
+
+	<!-- Transmissions are motors attached to a certain joint. We thus need to instantiate transmissions at the corresponding joints -->
+	<xacro:wheel_transmission wheel="front_right_wheel"/>
+	<xacro:wheel_transmission wheel="front_left_wheel"/>
+	<!--<xacro:wheel_transmission wheel="rear_right_wheel"/>    Currently only front wheel drive!
+	<xacro:wheel_transmission wheel="rear_left_wheel"/>-->
+	<xacro:hinge_transmission hinge="front_right_hinge"/>
+	<xacro:hinge_transmission hinge="front_left_hinge"/>
+
+
+	<!-- Sensors -->
 	<link name="left_camera_mount">
 		<visual>
 			<material name="blue"/>
@@ -287,5 +297,6 @@
 	</link>
 	<xacro:fixed_offset_joint parent="lidar_mount" child="lidar" offset="0 0 ${lidar_mount_height}"/>
 
+	<!-- Link Gazebo and ROS - this has to happen as the last thing -->
 	<xacro:include filename="$(find jetsoncar_description)/urdf/gazebo.xacro" />
 </robot>

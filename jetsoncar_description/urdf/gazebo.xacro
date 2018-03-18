@@ -1,7 +1,187 @@
 <?xml version="1.0"?>
 <robot name="jetsoncar" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-<!-- include the Gazebo description of the JetsonCar -->
-<!-- eg. inspired from the racecar project or https://github.com/husky/husky_simulator/blob/indigo-devel/husky_gazebo/urdf/husky.gazebo.xacro -->
+	<!-- include the Gazebo description of the JetsonCar -->
+	<!-- see the guide: http://wiki.ros.org/urdf/Tutorials/Using%20a%20URDF%20in%20Gazebo -->
+	<!-- inspired from https://github.com/mit-racecar/racecar-simulator/blob/master/racecar_description/urdf/racecar.gazebo and https://github.com/husky/husky_simulator/blob/indigo-devel/husky_gazebo/urdf/husky.gazebo.xacro -->
+
+	<!-- We need to link Gazebo and ROS and let Gazebo load all the previously defined ROS parameters. Therefore this Gazebo file should be included in the end of the main xacro file! --> 
+
+	<!-- Link Gazebo and ROS -->
+	<gazebo>
+		<plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+			<robotNamespace>/jetsoncar</robotNamespace>
+			<!--<robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType> -->
+		</plugin>
+	</gazebo>
+
+
+	<!-- Visual and physical properties -->
+	<!-- See http://gazebosim.org/tutorials?tut=ros_urdf&cat=connect_ros -->
+	<gazebo reference="baseplate">
+		<material>Gazebo/Grey</material>
+		<mu1 value="0.0"/> <!-- Columb friction coefficient in fdir1 direction -->
+		<mu2 value="0.0"/> <!-- Columb friction in perpendicular direction to fdir1 -->
+		<fdir1 value="1 0 0"/> <!-- direction of mu1 friction coefficient in the collision frame -->
+		<kp  value="10000000.0" /> <!-- contact stiffness -->
+		<kd  value="1.0" /> <!-- contact damping -->
+		<turnGravityOff>false</turnGravityOff>
+	</gazebo>
+
+	<gazebo reference="imu">
+		<material>Gazebo/Grey</material>
+		<mu1 value="0.0"/> <!-- Columb friction coefficient in fdir1 direction -->
+		<mu2 value="0.0"/> <!-- Columb friction in perpendicular direction to fdir1 -->
+		<fdir1 value="1 0 0"/> <!-- direction of mu1 friction coefficient in the collision frame -->
+		<kp  value="10000000.0" /> <!-- contact stiffness -->
+		<kd  value="1.0" /> <!-- contact damping -->
+		<turnGravityOff>false</turnGravityOff>
+	</gazebo>
+
+	<gazebo reference="front_mount">
+		<material>Gazebo/Grey</material>
+		<mu1 value="0.0"/> <!-- Columb friction coefficient in fdir1 direction -->
+		<mu2 value="0.0"/> <!-- Columb friction in perpendicular direction to fdir1 -->
+		<fdir1 value="1 0 0"/> <!-- direction of mu1 friction coefficient in the collision frame -->
+		<kp  value="10000000.0" /> <!-- contact stiffness -->
+		<kd  value="1.0" /> <!-- contact damping -->
+		<turnGravityOff>false</turnGravityOff>
+	</gazebo>	
+
+	<gazebo reference="rear_mount">
+		<material>Gazebo/Grey</material>
+		<mu1 value="0.0"/> <!-- Columb friction coefficient in fdir1 direction -->
+		<mu2 value="0.0"/> <!-- Columb friction in perpendicular direction to fdir1 -->
+		<fdir1 value="1 0 0"/> <!-- direction of mu1 friction coefficient in the collision frame -->
+		<kp  value="10000000.0" /> <!-- contact stiffness -->
+		<kd  value="1.0" /> <!-- contact damping -->
+		<turnGravityOff>false</turnGravityOff>
+	</gazebo>	
+	
+	<gazebo reference="front_shaft">
+		<material>Gazebo/Black</material>
+		<mu1 value="0.0"/> <!-- Columb friction coefficient in fdir1 direction -->
+		<mu2 value="0.0"/> <!-- Columb friction in perpendicular direction to fdir1 -->
+		<fdir1 value="1 0 0"/> <!-- direction of mu1 friction coefficient in the collision frame -->
+		<kp  value="10000000.0" /> <!-- contact stiffness -->
+		<kd  value="1.0" /> <!-- contact damping -->
+		<turnGravityOff>false</turnGravityOff>
+	</gazebo>
+
+	<gazebo reference="rear_shaft">
+		<material>Gazebo/Black</material>
+		<mu1 value="0.0"/> <!-- Columb friction coefficient in fdir1 direction -->
+		<mu2 value="0.0"/> <!-- Columb friction in perpendicular direction to fdir1 -->
+		<fdir1 value="1 0 0"/> <!-- direction of mu1 friction coefficient in the collision frame -->
+		<kp  value="10000000.0" /> <!-- contact stiffness -->
+		<kd  value="1.0" /> <!-- contact damping -->
+		<turnGravityOff>false</turnGravityOff>
+	</gazebo>
+
+	<gazebo reference="front_right_wheel">
+		<material>Gazebo/Black</material>
+		<mu1 value="1.0"/> <!-- Columb friction coefficient in fdir1 direction -->
+		<mu2 value="1.0"/> <!-- Columb friction in perpendicular direction to fdir1 -->
+		<fdir1 value="1 0 0"/> <!-- direction of mu1 friction coefficient in the collision frame -->
+		<kp  value="10000000.0" /> <!-- contact stiffness -->
+		<kd  value="1.0" /> <!-- contact damping -->
+		<turnGravityOff>false</turnGravityOff>
+	</gazebo>
+
+	<gazebo reference="front_left_wheel">
+		<material>Gazebo/Black</material>
+		<mu1 value="1.0"/> <!-- Columb friction coefficient in fdir1 direction -->
+		<mu2 value="1.0"/> <!-- Columb friction in perpendicular direction to fdir1 -->
+		<fdir1 value="1 0 0"/> <!-- direction of mu1 friction coefficient in the collision frame -->
+		<kp  value="10000000.0" /> <!-- contact stiffness -->
+		<kd  value="1.0" /> <!-- contact damping -->
+		<turnGravityOff>false</turnGravityOff>
+	</gazebo>
+
+	<gazebo reference="rear_right_wheel">
+		<material>Gazebo/Black</material>
+		<mu1 value="1.0"/> <!-- Columb friction coefficient in fdir1 direction -->
+		<mu2 value="1.0"/> <!-- Columb friction in perpendicular direction to fdir1 -->
+		<fdir1 value="1 0 0"/> <!-- direction of mu1 friction coefficient in the collision frame -->
+		<kp  value="10000000.0" /> <!-- contact stiffness -->
+		<kd  value="1.0" /> <!-- contact damping -->
+		<turnGravityOff>false</turnGravityOff>
+	</gazebo>
+
+	<gazebo reference="rear_left_wheel">
+		<material>Gazebo/Black</material>
+		<mu1 value="1.0"/> <!-- Columb friction coefficient in fdir1 direction -->
+		<mu2 value="1.0"/> <!-- Columb friction in perpendicular direction to fdir1 -->
+		<fdir1 value="1 0 0"/> <!-- direction of mu1 friction coefficient in the collision frame -->
+		<kp  value="10000000.0" /> <!-- contact stiffness -->
+		<kd  value="1.0" /> <!-- contact damping -->
+		<turnGravityOff>false</turnGravityOff>
+	</gazebo>
+
+	<gazebo reference="lidar_mount">
+		<material>Gazebo/Red</material>
+		<mu1 value="0.0"/> <!-- Columb friction coefficient in fdir1 direction -->
+		<mu2 value="0.0"/> <!-- Columb friction in perpendicular direction to fdir1 -->
+		<fdir1 value="1 0 0"/> <!-- direction of mu1 friction coefficient in the collision frame -->
+		<kp  value="10000000.0" /> <!-- contact stiffness -->
+		<kd  value="1.0" /> <!-- contact damping -->
+		<turnGravityOff>false</turnGravityOff>
+	</gazebo>
+
+	<gazebo reference="lidar">
+		<material>Gazebo/Black</material>
+		<mu1 value="0.0"/> <!-- Columb friction coefficient in fdir1 direction -->
+		<mu2 value="0.0"/> <!-- Columb friction in perpendicular direction to fdir1 -->
+		<fdir1 value="1 0 0"/> <!-- direction of mu1 friction coefficient in the collision frame -->
+		<kp  value="10000000.0" /> <!-- contact stiffness -->
+		<kd  value="1.0" /> <!-- contact damping -->
+		<turnGravityOff>false</turnGravityOff>
+	</gazebo>
+
+	<gazebo reference="left_camera_mount">
+		<material>Gazebo/Black</material>
+		<mu1 value="0.0"/> <!-- Columb friction coefficient in fdir1 direction -->
+		<mu2 value="0.0"/> <!-- Columb friction in perpendicular direction to fdir1 -->
+		<fdir1 value="1 0 0"/> <!-- direction of mu1 friction coefficient in the collision frame -->
+		<kp  value="10000000.0" /> <!-- contact stiffness -->
+		<kd  value="1.0" /> <!-- contact damping -->
+		<turnGravityOff>false</turnGravityOff>
+	</gazebo>
+
+	<gazebo reference="left_camera">
+		<material>Gazebo/Blue</material>
+		<mu1 value="0.0"/> <!-- Columb friction coefficient in fdir1 direction -->
+		<mu2 value="0.0"/> <!-- Columb friction in perpendicular direction to fdir1 -->
+		<fdir1 value="1 0 0"/> <!-- direction of mu1 friction coefficient in the collision frame -->
+		<kp  value="10000000.0" /> <!-- contact stiffness -->
+		<kd  value="1.0" /> <!-- contact damping -->
+		<turnGravityOff>false</turnGravityOff>
+	</gazebo>
+
+	<gazebo reference="right_camera_mount">
+		<material>Gazebo/Black</material>
+		<mu1 value="0.0"/> <!-- Columb friction coefficient in fdir1 direction -->
+		<mu2 value="0.0"/> <!-- Columb friction in perpendicular direction to fdir1 -->
+		<fdir1 value="1 0 0"/> <!-- direction of mu1 friction coefficient in the collision frame -->
+		<kp  value="10000000.0" /> <!-- contact stiffness -->
+		<kd  value="1.0" /> <!-- contact damping -->
+		<turnGravityOff>false</turnGravityOff>
+	</gazebo>
+
+	<gazebo reference="right_camera">
+		<material>Gazebo/Blue</material>
+		<mu1 value="0.0"/> <!-- Columb friction coefficient in fdir1 direction -->
+		<mu2 value="0.0"/> <!-- Columb friction in perpendicular direction to fdir1 -->
+		<fdir1 value="1 0 0"/> <!-- direction of mu1 friction coefficient in the collision frame -->
+		<kp  value="10000000.0" /> <!-- contact stiffness -->
+		<kd  value="1.0" /> <!-- contact damping -->
+		<turnGravityOff>false</turnGravityOff>
+	</gazebo>
+
+
+	<!-- Plugins, eg. sensors -->
+	<!-- hokuyo LiDAR can be found here: https://github.com/mit-racecar/racecar-simulator/blob/master/racecar_description/urdf/racecar.gazebo#L59 -->
+
+	<!-- camera sensor might be found here: https://github.com/JoshMarino/gazebo_and_ros_control or here: http://gazebosim.org/tutorials?tut=ros_gzplugins -->
 
 </robot>

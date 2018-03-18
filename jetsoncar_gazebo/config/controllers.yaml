@@ -1,0 +1,31 @@
+# These are parameters to be used with the built in controllers for the actuators. This YAML file is used as part of the gazebo.launch file in the jetsoncar_description repository
+
+jetsoncar:
+  # Publish all joint states -----------------------------------
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 50
+  
+
+  # Velocity Controllers ---------------------------------------
+  front_right_wheel_effort_controller:
+    type: effort_controllers/JointEffortController
+    joint: front_right_wheel_joint
+    pid: {p: 1.0, i: 0.0, d: 0.0, i_clamp: 0.0}
+  front_left_wheel_effort_controller:
+    type: effort_controllers/JointVelocityController
+    joint: front_left_wheel_joint
+    pid: {p: 1.0, i: 0.0, d: 0.0, i_clamp: 0.0}
+
+
+  # Position Controllers ---------------------------------------
+  front_left_hinge_position_controller:
+    joint: front_left_hinge_joint
+    type: effort_controllers/JointPositionController
+    pid: {p: 1.0, i: 0.0, d: 0.5}
+  front_right_hinge_position_controller:
+    joint: front_right_hinge_joint
+    type: effort_controllers/JointPositionController
+    pid: {p: 1.0, i: 0.0, d: 0.5}
+
+
