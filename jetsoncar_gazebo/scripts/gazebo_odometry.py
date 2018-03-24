@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 
 '''
-This script makes Gazebo less fail by translating gazebo status messages to odometry data.
-Since Gazebo also publishes data faster than normal odom data, this script caps the update to 20hz.
-Winter Guerra
+Script to publish car base_link transform relative to the map origo using the Gazebo pose of the base_link
 '''
 
 import rospy

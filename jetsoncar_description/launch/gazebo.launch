@@ -34,12 +34,14 @@
 
 	<!-- calculate and publish the tf's for each joint based on the urdf file within robot_description -->
 	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
-		<!--<param name="publish_frequency" type="double" value="30.0" />-->
+		<param name="publish_frequency" type="double" value="50.0" />
 		<remap from="/joint_states" to="/jetsoncar/joint_states" /> <!-- this line is very important for visualization in RVIZ when used in conjunction with Gazebo (because of the namespace change) -->
 	</node>
 
 	<!-- rviz display -->
 	<node name="rviz_visualizer" pkg="rviz" type="rviz" required="true" args="-d $(find jetsoncar_description)/rviz/tf_display.rviz"/>
+
+	<node pkg="jetsoncar_gazebo" name="jetsoncar_encoder_node" type="encoder.py"/>-->
 
 	<!--<node pkg="jetsoncar_gazebo" name="gazebo_odometry_node" type="gazebo_odometry.py"/>-->
 

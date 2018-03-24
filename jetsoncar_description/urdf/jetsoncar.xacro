@@ -186,7 +186,7 @@
 		</inertial>
 	</link>
 	<xacro:wheel_joint parent="rear_shaft" child="rear_right_wheel" offset="0 -${left_to_right_wheel_center/2} 0"/>
-	<!--<xacro:wheel_transmission wheel="rear_right_wheel"/>-->
+	<xacro:wheel_transmission wheel="rear_right_wheel"/>
 
 	<link name="rear_left_wheel">
 		<visual>
@@ -202,7 +202,7 @@
 		</inertial>
 	</link>
 	<xacro:wheel_joint parent="rear_shaft" child="rear_left_wheel" offset="0 ${left_to_right_wheel_center/2} 0"/>
-	<!--<xacro:wheel_transmission wheel="rear_left_wheel"/>-->
+	<xacro:wheel_transmission wheel="rear_left_wheel"/>
 
 
 	<!-- Sensors -->
