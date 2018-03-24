@@ -17,7 +17,6 @@
 	<!-- X axis direction is forward, Y axis direction is left -->
 
 	<xacro:include filename="$(find jetsoncar_description)/urdf/functions.xacro" />
-	<xacro:include filename="$(find jetsoncar_description)/urdf/materials.xacro" />
 	<xacro:include filename="$(find jetsoncar_description)/urdf/physical.xacro" />
 	<xacro:include filename="$(find jetsoncar_description)/urdf/joints.xacro" />
 	<xacro:include filename="$(find jetsoncar_description)/urdf/transmissions.xacro" />
@@ -116,28 +115,30 @@
 			<material name="white"/>
 			<xacro:hinge_geometry/>
 		</visual>
-		<collision>
+		<!--<collision>
 			<xacro:hinge_geometry/>
-		</collision>
+		</collision>-->
 		<inertial>
 			<xacro:hinge_inertial/>
 		</inertial>
 	</link>
 	<xacro:hinge_joint parent="front_shaft" child="front_right_hinge" offset="0 -${left_to_right_wheel_center/2} 0"/>
+	<xacro:hinge_transmission hinge="front_right_hinge"/>
 
 	<link name="front_left_hinge">
 		<visual>
 			<material name="white"/>
 			<xacro:hinge_geometry/>
 		</visual>
-		<collision>
+		<!--<collision>
 			<xacro:hinge_geometry/>
-		</collision>
+		</collision>-->
 		<inertial>
 			<xacro:hinge_inertial/>
 		</inertial>
 	</link>
 	<xacro:hinge_joint parent="front_shaft" child="front_left_hinge" offset="0 ${left_to_right_wheel_center/2} 0"/>
+	<xacro:hinge_transmission hinge="front_left_hinge"/>
 
 	<link name="front_right_wheel">
 		<visual>
@@ -146,13 +147,14 @@
 		</visual>
 		<collision>
 			<xacro:wheel_geometry/>
-			<contact_coefficients mu="0" kp="1000.0" kd="1.0"/>  <!-- mu=The friction coefficient, kp=Stiffness coefficient, kd=Dampening coefficient -->
+			<!--<contact_coefficients mu="0" kp="1000.0" kd="1.0"/>-->  <!-- mu=The friction coefficient, kp=Stiffness coefficient, kd=Dampening coefficient -->
 		</collision>
 		<inertial>
 			<xacro:wheel_inertial/>
 		</inertial>
 	</link>
 	<xacro:wheel_joint parent="front_right_hinge" child="front_right_wheel" offset="0 0 0"/>
+	<xacro:wheel_transmission wheel="front_right_wheel"/>
 
 	<link name="front_left_wheel">
 		<visual>
@@ -161,14 +163,14 @@
 		</visual>
 		<collision>
 			<xacro:wheel_geometry/>
-			<contact_coefficients mu="0" kp="1000.0" kd="1.0"/>  <!-- mu=The friction coefficient, kp=Stiffness coefficient, kd=Dampening coefficient -->
+			<!--<contact_coefficients mu="0" kp="1000.0" kd="1.0"/>-->  <!-- mu=The friction coefficient, kp=Stiffness coefficient, kd=Dampening coefficient -->
 		</collision>
 		<inertial>
 			<xacro:wheel_inertial/>
 		</inertial>
 	</link>
 	<xacro:wheel_joint parent="front_left_hinge" child="front_left_wheel" offset="0 0 0"/>
-
+	<xacro:wheel_transmission wheel="front_left_wheel"/>
 
 	<link name="rear_right_wheel">
 		<visual>
@@ -177,13 +179,14 @@
 		</visual>
 		<collision>
 			<xacro:wheel_geometry/>
-			<contact_coefficients mu="0" kp="1000.0" kd="1.0"/>  <!-- mu=The friction coefficient, kp=Stiffness coefficient, kd=Dampening coefficient -->
+			<!--<contact_coefficients mu="0" kp="1000.0" kd="1.0"/>-->  <!-- mu=The friction coefficient, kp=Stiffness coefficient, kd=Dampening coefficient -->
 		</collision>
 		<inertial>
 			<xacro:wheel_inertial/>
 		</inertial>
 	</link>
 	<xacro:wheel_joint parent="rear_shaft" child="rear_right_wheel" offset="0 -${left_to_right_wheel_center/2} 0"/>
+	<!--<xacro:wheel_transmission wheel="rear_right_wheel"/>-->
 
 	<link name="rear_left_wheel">
 		<visual>
@@ -192,23 +195,14 @@
 		</visual>
 		<collision>
 			<xacro:wheel_geometry/>
-			<contact_coefficients mu="0" kp="1000.0" kd="1.0"/>  <!-- mu=The friction coefficient, kp=Stiffness coefficient, kd=Dampening coefficient -->
+			<!--<contact_coefficients mu="0" kp="1000.0" kd="1.0"/>-->  <!-- mu=The friction coefficient, kp=Stiffness coefficient, kd=Dampening coefficient -->
 		</collision>
 		<inertial>
 			<xacro:wheel_inertial/>
 		</inertial>
 	</link>
 	<xacro:wheel_joint parent="rear_shaft" child="rear_left_wheel" offset="0 ${left_to_right_wheel_center/2} 0"/>
-
-
-
-	<!-- Transmissions are motors attached to a certain joint. We thus need to instantiate transmissions at the corresponding joints -->
-	<xacro:wheel_transmission wheel="front_right_wheel"/>
-	<xacro:wheel_transmission wheel="front_left_wheel"/>
-	<!--<xacro:wheel_transmission wheel="rear_right_wheel"/>    Currently only front wheel drive!
-	<xacro:wheel_transmission wheel="rear_left_wheel"/>-->
-	<xacro:hinge_transmission hinge="front_right_hinge"/>
-	<xacro:hinge_transmission hinge="front_left_hinge"/>
+	<!--<xacro:wheel_transmission wheel="rear_left_wheel"/>-->
 
 
 	<!-- Sensors -->
@@ -297,6 +291,8 @@
 	</link>
 	<xacro:fixed_offset_joint parent="lidar_mount" child="lidar" offset="0 0 ${lidar_mount_height}"/>
 
+
 	<!-- Link Gazebo and ROS - this has to happen as the last thing -->
 	<xacro:include filename="$(find jetsoncar_description)/urdf/gazebo.xacro" />
+	<xacro:include filename="$(find jetsoncar_description)/urdf/materials.xacro" />
 </robot>

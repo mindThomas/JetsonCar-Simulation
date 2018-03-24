@@ -69,7 +69,7 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        front_left_bearing:
+        front_left_hinge:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -84,7 +84,7 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        front_right_bearing:
+        front_right_hinge:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -169,16 +169,16 @@ Visualization Manager:
           Value: true
         baseplate:
           Value: false
-        front_left_bearing:
+        front_left_hinge:
           Value: false
         front_left_wheel:
-          Value: false
+          Value: true
         front_mount:
           Value: false
-        front_right_bearing:
+        front_right_hinge:
           Value: false
         front_right_wheel:
-          Value: false
+          Value: true
         front_shaft:
           Value: false
         imu:
@@ -213,10 +213,10 @@ Visualization Manager:
           baseplate:
             front_mount:
               front_shaft:
-                front_left_bearing:
+                front_left_hinge:
                   front_left_wheel:
                     {}
-                front_right_bearing:
+                front_right_hinge:
                   front_right_wheel:
                     {}
             imu:

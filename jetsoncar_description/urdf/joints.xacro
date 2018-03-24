@@ -31,7 +31,7 @@
 			<child link="${child}"/>
 			<origin xyz="${offset}" rpy="0 0 0" /> <!-- offset from parent to child, so with direction based in parent frame -->
 			<axis xyz="0 0 1"/>
-	    		<limit lower="-${steering_wheel_angle_limit}" upper="${steering_wheel_angle_limit}" effort="100" velocity="0.5"/> <!-- effeort is similar to torque/acceleration -->
+	    		<limit lower="-${steering_wheel_angle_limit}" upper="${steering_wheel_angle_limit}" effort="10" velocity="100"/> <!-- effeort is similar to torque/acceleration -->
 			<!-- friction - The physical static friction. For prismatic joints, the units are Newtons. For revolving joints, the units are Newton meters. -->
 			<!-- damping - The physical damping value. For prismatic joints, the units are Newton seconds per meter. For revolving joints, Newton meter secons per radian. -->
 			<!--<dynamics friction="0.0" damping="0.0"/>-->
@@ -47,6 +47,7 @@
 			<!-- friction - The physical static friction. For prismatic joints, the units are Newtons. For revolving joints, the units are Newton meters. -->
 			<!-- damping - The physical damping value. For prismatic joints, the units are Newton seconds per meter. For revolving joints, Newton meter secons per radian. -->
 			<!--<dynamics friction="0.0" damping="0.0"/>-->
+			<limit effort="10" velocity="100"/>
 		</joint>
 	</xacro:macro>
 

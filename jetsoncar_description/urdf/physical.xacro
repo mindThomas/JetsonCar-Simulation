@@ -11,7 +11,7 @@
 	<!-- Wheel related properties -->
 	<xacro:property name="wheel_diameter" value="0.155" />
 	<xacro:property name="wheel_thickness" value="0.064" />
-	<xacro:property name="wheel_weight" value="0.050" />
+	<xacro:property name="wheel_weight" value="0.150" />
 
 	<!-- suspension stiffness, damping, and limits -->
 	<xacro:property name="susp_travel" value="${wheel_diameter/2}"/>
@@ -133,7 +133,7 @@
 	</xacro:macro>
 	<xacro:macro name="hinge_inertial">
 		<origin xyz="0 0 0" rpy="0 0 0" />
-		<mass value="0.01" />
+		<mass value="0.05" />
 		<inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" /> <!-- small inertia -->
 	</xacro:macro>
 
